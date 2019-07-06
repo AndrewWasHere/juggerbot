@@ -9,11 +9,15 @@
  */
 #include <Wire.h>
 #include <Zumo32U4.h>
+#include "attackstate.h"
 #include "eventqueue.h"
 #include "events.h"
+#include "faceinteriorstate.h"
+#include "getoffedgestate.h"
 #include "initstate.h"
 #include "robot.h"
 #include "robotstatemachine.h"
+#include "scanstate.h"
 #include "standbystate.h"
 
 // Robot interface.
@@ -23,6 +27,10 @@ IRobot robot;
 RobotStateMachine machine(nullptr, robot);
 InitState initialized(&machine, robot);
 StandbyState standby(&machine, robot);
+ScanState scan(&machine, robot);
+AttackState attack(&machine, robot);
+FaceInteriorState face_interior(&machine, robot);
+GetOffEdgeState get_off_edge(&machine, robot);
 
 EventQueue queue;
 

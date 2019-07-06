@@ -22,6 +22,11 @@ enum Boundary
 class IRobot
 {
 public:
+    // Common speed values.
+    int16_t const ramming_speed = 300;
+    int16_t const rushing_speed = 200;
+    int16_t const stalking_speed = 150;
+
     // Call in `setup()`.
     void setup();
 
@@ -36,7 +41,7 @@ public:
     void start_timer(unsigned long timeout_in_ms);
 
     // Motor interfaces.
-    // Note: motor speed is not linear!
+    // Note: motor speed is logarithmic, not linear!
     void change_speed_by(int16_t delta);
     void change_speed_by(int16_t left_delta, int16_t right_delta);
     void move(int16_t speed);
@@ -45,6 +50,10 @@ public:
     void spin_left(int16_t degrees, int16_t speed);
     void spin_right(int16_t degrees, int16_t speed);
     void cancel_encoder();
+
+    // Movement interfaces.
+    void scan();
+    void face_interior(DetectDirection boundary_direction);
 
 private:
     // Change the following value to match the gear ratio of your Zumo.

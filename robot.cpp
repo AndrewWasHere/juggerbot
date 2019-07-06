@@ -98,7 +98,7 @@ void IRobot::generate_events(EventQueue & q)
     }
 
     // Check proximity sensor.
-    uint8_t const proximity_threshold = 1;
+    uint8_t const proximity_threshold = 3;
     m_proximity_sensors.read();
     uint8_t brightness_left = m_proximity_sensors.countsFrontWithLeftLeds();
     uint8_t brightness_right = m_proximity_sensors.countsFrontWithRightLeds();
@@ -206,6 +206,52 @@ void IRobot::spin_right(int16_t degrees, int16_t speed)
 void IRobot::cancel_encoder()
 {
     m_encoder_count = 0;
+}
+
+void IRobot::scan()
+{
+    int16_t const speed = 200;
+    if (rand() % 2)
+    {
+        spin_left(0, speed);
+    }
+    else
+    {
+        spin_right(0, speed);
+    }
+}
+
+void IRobot::face_interior(DetectDirection boundary_direction)
+{
+    int16_t const speed = 200;
+    int16_t theta;
+    switch(boundary_direction)
+    {
+    case AHEAD:
+        // Spin 90 - 270 degrees. Either direction.
+        theta = 90 + (rand() % 181);
+        if (rand() % 2)
+        {
+            spin_left(theta, speed);
+        }
+        else
+        {
+            spin_right(theta, speed);
+        }
+        break;        
+    case LEFT:
+        // Spin right 90 - 180 degrees.
+        theta = 90 + (rand() % 91);
+        spin_right(theta, speed);
+        break;
+    case RIGHT:
+        // Spin left 90 - 180 degrees.
+        theta = 90 + (rand() % 91);
+        spin_left(theta, speed);
+        break;
+    default:
+        break;
+    }
 }
 
 //

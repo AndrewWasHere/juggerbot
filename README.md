@@ -1,8 +1,9 @@
-# Sumobot Template
+# Juggerbot
 
-Template for implementing a robot state machine on a Zumo32U4 using the
-[state machine library](https://github.com/AndrewWasHere/statemachine-arduino) 
-on an Arduino.
+The juggernaut of sumo bots. At least in name.
+
+Sumo bot program for the Zumo32U4. Implemented using the
+[state machine library](https://github.com/AndrewWasHere/statemachine-arduino).
 
 Zumo32U4 sumobot available from 
 [Pololu](https://www.pololu.com/category/170/zumo-32u4-robot).
