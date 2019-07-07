@@ -100,20 +100,20 @@ void IRobot::generate_events(EventQueue & q)
     // Check proximity sensor.
     uint8_t const proximity_threshold = 3;
     m_proximity_sensors.read();
-    uint8_t brightness_left = m_proximity_sensors.countsFrontWithLeftLeds();
-    uint8_t brightness_right = m_proximity_sensors.countsFrontWithRightLeds();
+    proximity_event.m_left_brightness = m_proximity_sensors.countsFrontWithLeftLeds();
+    proximity_event.m_right_brightness = m_proximity_sensors.countsFrontWithRightLeds();
     if (
-        brightness_left >= proximity_threshold || 
-        brightness_right >= proximity_threshold
+        proximity_event.m_left_brightness >= proximity_threshold || 
+        proximity_event.m_right_brightness >= proximity_threshold
     )
     {
         // Object detected.
-        if (brightness_left > brightness_right)
+        if (proximity_event.m_left_brightness > proximity_event.m_right_brightness)
         {
             proximity_event.m_direction = LEFT;
             q.push(&proximity_event);
         }
-        else if (brightness_right > brightness_left)
+        else if (proximity_event.m_left_brightness < proximity_event.m_right_brightness)
         {
             proximity_event.m_direction = RIGHT;
             q.push(&proximity_event);
@@ -129,6 +129,10 @@ void IRobot::generate_events(EventQueue & q)
         proximity_event.m_direction = NONE;
         q.push(&proximity_event);
     }
+    m_lcd.gotoXY(0,1);
+    m_lcd.print(proximity_event.m_left_brightness);
+    m_lcd.print(' ');
+    m_lcd.print(proximity_event.m_right_brightness);
 }
 
 void IRobot::display(char const * msg)
@@ -164,6 +168,12 @@ void IRobot::change_speed_by(int16_t left_delta, int16_t right_delta)
     m_left_motor_speed = clip_speed(m_left_motor_speed + left_delta);
     m_right_motor_speed = clip_speed(m_right_motor_speed + right_delta);
     m_motors.setSpeeds(m_left_motor_speed, m_right_motor_speed);
+}
+
+void IRobot::get_speed(int16_t & left, int16_t & right)
+{
+    left = m_left_motor_speed;
+    right = m_right_motor_speed;
 }
 
 void IRobot::move(int16_t speed)
@@ -210,7 +220,7 @@ void IRobot::cancel_encoder()
 
 void IRobot::scan()
 {
-    int16_t const speed = 200;
+    int16_t const speed = STALKING_SPEED;
     if (rand() % 2)
     {
         spin_left(0, speed);
@@ -218,39 +228,6 @@ void IRobot::scan()
     else
     {
         spin_right(0, speed);
-    }
-}
-
-void IRobot::face_interior(DetectDirection boundary_direction)
-{
-    int16_t const speed = 200;
-    int16_t theta;
-    switch(boundary_direction)
-    {
-    case AHEAD:
-        // Spin 90 - 270 degrees. Either direction.
-        theta = 90 + (rand() % 181);
-        if (rand() % 2)
-        {
-            spin_left(theta, speed);
-        }
-        else
-        {
-            spin_right(theta, speed);
-        }
-        break;        
-    case LEFT:
-        // Spin right 90 - 180 degrees.
-        theta = 90 + (rand() % 91);
-        spin_right(theta, speed);
-        break;
-    case RIGHT:
-        // Spin left 90 - 180 degrees.
-        theta = 90 + (rand() % 91);
-        spin_left(theta, speed);
-        break;
-    default:
-        break;
     }
 }
 

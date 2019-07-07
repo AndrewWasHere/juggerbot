@@ -5,16 +5,13 @@ state RobotStateMachine {
     Standby : on entry / start timer(5000 ms)
     Standby --> Scan : timer 
     Scan : on entry / spin continuously in random direction
-    Scan --> Attack : proximity[!none] 
-    Scan --> Face_Interior : boundary / \nface_interior(boundary.m_direction)
-    Attack : on entry / move forward at stalking speed
+    Scan --> Attack : proximity[!none] / \nmove forward at relative speed
+    Scan --> Backup : boundary / \nback up
     Attack : proximity[left] / slow left tread
     Attack : proximity[right] / slow right tread
     Attack : proximity[ahead] / move forward at relative speed
     Attack --> Scan : proximity[none]
-    Attack --> Face_Interior : boundary / \nface_interior(boundary.m_direction)
-    Face_Interior --> Get_Off_Edge : encoder / \nmove forward, start timer(250 ms)
-    Get_Off_Edge --> Scan : timer 
-    Get_Off_Edge --> Attack : proximity[!none]
+    Attack --> Backup : boundary / \nback up
+    Backup --> Scan : timer 
 }
 @enduml

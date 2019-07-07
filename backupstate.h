@@ -8,12 +8,12 @@
 
 #include "robotstate.h"
 
-class FaceInteriorState : public RobotState
+class BackupState : public RobotState
 {
 public:
-    FaceInteriorState(State * parent, IRobot & robot);
+    BackupState(State * parent, IRobot & robot);
 
 protected:
-    bool on_event(EncoderEvent & event) override;
+    bool on_event(TimerEvent & event) override;
 };
 

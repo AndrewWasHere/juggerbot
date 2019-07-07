@@ -12,8 +12,7 @@
 #include "attackstate.h"
 #include "eventqueue.h"
 #include "events.h"
-#include "faceinteriorstate.h"
-#include "getoffedgestate.h"
+#include "backupstate.h"
 #include "initstate.h"
 #include "robot.h"
 #include "robotstatemachine.h"
@@ -29,8 +28,7 @@ InitState initialized(&machine, robot);
 StandbyState standby(&machine, robot);
 ScanState scan(&machine, robot);
 AttackState attack(&machine, robot);
-FaceInteriorState face_interior(&machine, robot);
-GetOffEdgeState get_off_edge(&machine, robot);
+BackupState backup(&machine, robot);
 
 EventQueue queue;
 
